@@ -1,5 +1,7 @@
+import errno
 import json
 import subprocess
+import time
 
 
 def get_readable_time(seconds: int) -> str:
@@ -128,18 +130,43 @@ def check_duration(file_path):
         file_path,
     ]
 
-    pipe = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    out, err = pipe.communicate()
-    _json = json.loads(out)
+    retries = 5
+    delay = 0.5
+    _json = {}
 
-    if "format" in _json:
-        if "duration" in _json["format"]:
-            return float(_json["format"]["duration"])
+    for attempt in range(retries):
+        try:
+            pipe = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            out, err = pipe.communicate()
+            _json = json.loads(out)
+            break
+        except OSError as e:
+            # Check if ETXTBSY (Text file busy, errno 26) is raised
+            is_busy = (
+                e.errno == getattr(errno, "ETXTBSY", 26)
+                or e.errno == 26
+                or "text file busy" in str(e).lower()
+            )
+            if is_busy and attempt < retries - 1:
+                time.sleep(delay)
+                continue
+            return "Unknown"
+        except Exception:
+            return "Unknown"
+    else:
+        return "Unknown"
 
-    if "streams" in _json:
-        for s in _json["streams"]:
-            if "duration" in s:
-                return float(s["duration"])
+    try:
+        if "format" in _json:
+            if "duration" in _json["format"]:
+                return float(_json["format"]["duration"])
+
+        if "streams" in _json:
+            for s in _json["streams"]:
+                if "duration" in s:
+                    return float(s["duration"])
+    except Exception:
+        pass
 
     return "Unknown"
 
