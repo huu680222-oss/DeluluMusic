@@ -30,7 +30,7 @@ YT_API_KEY = getenv("YT_API_KEY" , None ) ## Your API key like: xbit_10000000xx0
 
 PRIVACY_LINK = getenv("PRIVACY_LINK", "")
 SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/your_fairytale07")
-SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/narzofamily")
+SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/Xbroze")
 AUTO_LEAVING_ASSISTANT = getenv("AUTO_LEAVING_ASSISTANT", "False")
 AUTO_LEAVE_ASSISTANT_TIME = int(getenv("ASSISTANT_LEAVE_TIME", "9000"))
 SONG_DOWNLOAD_DURATION = int(getenv("SONG_DOWNLOAD_DURATION", "9999999"))
@@ -55,16 +55,16 @@ autoclean = []
 confirmer = {}
 START_IMG_URL = getenv("START_IMG_URL", "https://litter.catbox.moe/xr9jf82b2umeke7j.jpg")
 PING_IMG_URL = getenv("PING_IMG_URL", "https://litter.catbox.moe/xyedznhk80hmial2.mp4")
-PLAYLIST_IMG_URL = "https://litter.catbox.moe/o91jli53b2qn87v4.jpg"
-STATS_IMG_URL = "https://litter.catbox.moe/mzciup11cxe1d6wt.jpg"
-TELEGRAM_AUDIO_URL = "https://litter.catbox.moe/7x4b2jc2e6pz6pky.jpg"
-TELEGRAM_VIDEO_URL = "https://litter.catbox.moe/7x4b2jc2e6pz6pky.jpg"
-STREAM_IMG_URL = "https://telegra.ph/file/d30d11c4365c025c25e3e.jpg"
-SOUNCLOUD_IMG_URL = "https://telegra.ph/file/d30d11c4365c025c25e3e.jpg"
-YOUTUBE_IMG_URL = "https://files.catbox.moe/2y5o3g.jpg"
-SPOTIFY_ARTIST_IMG_URL = "https://files.catbox.moe/2y5o3g.jpg"
-SPOTIFY_ALBUM_IMG_URL = "https://files.catbox.moe/2y5o3g.jpg"
-SPOTIFY_PLAYLIST_IMG_URL = "https://telegra.ph/file/d30d11c4365c025c25e3e.jpg"
+PLAYLIST_IMG_URL = "https://graph.org/file/4fb9a698630aa5b47be05-060979d72b7752fc8f.jpg"
+STATS_IMG_URL = "https://graph.org/file/4fb9a698630aa5b47be05-060979d72b7752fc8f.jpg"
+TELEGRAM_AUDIO_URL = "https://graph.org/file/4fb9a698630aa5b47be05-060979d72b7752fc8f.jpg"
+TELEGRAM_VIDEO_URL = "https://graph.org/file/4fb9a698630aa5b47be05-060979d72b7752fc8f.jpg"
+STREAM_IMG_URL = "https://graph.org/file/4fb9a698630aa5b47be05-060979d72b7752fc8f.jpg"
+SOUNCLOUD_IMG_URL = "https://graph.org/file/4fb9a698630aa5b47be05-060979d72b7752fc8f.jpg"
+YOUTUBE_IMG_URL = "https://graph.org/file/4fb9a698630aa5b47be05-060979d72b7752fc8f.jpg"
+SPOTIFY_ARTIST_IMG_URL = "https://graph.org/file/4fb9a698630aa5b47be05-060979d72b7752fc8f.jpg"
+SPOTIFY_ALBUM_IMG_URL = "https://graph.org/file/4fb9a698630aa5b47be05-060979d72b7752fc8f.jpg"
+SPOTIFY_PLAYLIST_IMG_URL = "https://graph.org/file/4fb9a698630aa5b47be05-060979d72b7752fc8f.jpg"
 def time_to_seconds(time):
     stringt = str(time)
     return sum(int(x) * 60**i for i, x in enumerate(reversed(stringt.split(":"))))
