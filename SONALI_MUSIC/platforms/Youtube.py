@@ -15,6 +15,13 @@ API_KEY = os.environ.get("SHRUTI_API_KEY", "ShrutiBotsjyOuNr6aH5inWY06YDYJ") ## 
 DOWNLOAD_DIR = "downloads"
 
 
+def get_cookie_path():
+    for p in ["SONALI_MUSIC/assets/cookies.txt", "cookies/cookies.txt"]:
+        if os.path.exists(p) and os.path.getsize(p) > 0:
+            return p
+    return None
+
+
 def time_to_seconds(time):
     stringt = str(time)
     return sum(int(x) * 60 ** i for i, x in enumerate(reversed(stringt.split(":"))))
@@ -37,11 +44,34 @@ async def download_song(link: str) -> str:
                 params={"url": video_id, "type": "audio", "api_key": API_KEY},
                 timeout=aiohttp.ClientTimeout(total=300)
             ) as resp:
-                if resp.status != 200:
-                    return None
-                with open(file_path, "wb") as f:
-                    async for chunk in resp.content.iter_chunked(131072):
-                        f.write(chunk)
+                if resp.status == 200:
+                    with open(file_path, "wb") as f:
+                        async for chunk in resp.content.iter_chunked(131072):
+                            f.write(chunk)
+                    if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+                        return file_path
+    except Exception:
+        pass
+
+    try:
+        ydl_opts = {
+            "format": "bestaudio/best",
+            "outtmpl": os.path.join(DOWNLOAD_DIR, f"{video_id}.%(ext)s"),
+            "geo_bypass": True,
+            "nocheckcertificate": True,
+            "quiet": True,
+            "postprocessors": [{
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "mp3",
+                "preferredquality": "192",
+            }],
+        }
+        cookie_path = get_cookie_path()
+        if cookie_path:
+            ydl_opts["cookiefile"] = cookie_path
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            loop = asyncio.get_event_loop()
+            await loop.run_in_executor(None, lambda: ydl.download([f"https://www.youtube.com/watch?v={video_id}"]))
         if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
             return file_path
         return None
@@ -71,11 +101,29 @@ async def download_video(link: str) -> str:
                 params={"url": video_id, "type": "video", "api_key": API_KEY},
                 timeout=aiohttp.ClientTimeout(total=600)
             ) as resp:
-                if resp.status != 200:
-                    return None
-                with open(file_path, "wb") as f:
-                    async for chunk in resp.content.iter_chunked(131072):
-                        f.write(chunk)
+                if resp.status == 200:
+                    with open(file_path, "wb") as f:
+                        async for chunk in resp.content.iter_chunked(131072):
+                            f.write(chunk)
+                    if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+                        return file_path
+    except Exception:
+        pass
+
+    try:
+        ydl_opts = {
+            "format": "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
+            "outtmpl": file_path,
+            "geo_bypass": True,
+            "nocheckcertificate": True,
+            "quiet": True,
+        }
+        cookie_path = get_cookie_path()
+        if cookie_path:
+            ydl_opts["cookiefile"] = cookie_path
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            loop = asyncio.get_event_loop()
+            await loop.run_in_executor(None, lambda: ydl.download([f"https://www.youtube.com/watch?v={video_id}"]))
         if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
             return file_path
         return None
@@ -218,6 +266,9 @@ class YouTubeAPI:
         if "&" in link:
             link = link.split("&")[0]
         ytdl_opts = {"quiet": True}
+        cookie_path = get_cookie_path()
+        if cookie_path:
+            ytdl_opts["cookiefile"] = cookie_path
         ydl = yt_dlp.YoutubeDL(ytdl_opts)
         with ydl:
             formats_available = []
