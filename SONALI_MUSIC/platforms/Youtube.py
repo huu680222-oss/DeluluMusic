@@ -18,7 +18,14 @@ DOWNLOAD_DIR = "downloads"
 def get_cookie_path():
     for p in ["SONALI_MUSIC/assets/cookies.txt", "cookies/cookies.txt"]:
         if os.path.exists(p) and os.path.getsize(p) > 0:
-            return p
+            try:
+                with open(p, "r", encoding="utf-8", errors="ignore") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith("#"):
+                            return p
+            except Exception:
+                pass
     return None
 
 
