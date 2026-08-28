@@ -67,6 +67,8 @@ async def download_song(link: str) -> str:
             "geo_bypass": True,
             "nocheckcertificate": True,
             "quiet": True,
+            "remote_components": ["ejs:github"],
+            "js_runtimes": {"node": {}},
             "postprocessors": [{
                 "key": "FFmpegExtractAudio",
                 "preferredcodec": "mp3",
@@ -124,6 +126,8 @@ async def download_video(link: str) -> str:
             "geo_bypass": True,
             "nocheckcertificate": True,
             "quiet": True,
+            "remote_components": ["ejs:github"],
+            "js_runtimes": {"node": {}},
         }
         cookie_path = get_cookie_path()
         if cookie_path:
@@ -272,7 +276,11 @@ class YouTubeAPI:
             link = self.base + link
         if "&" in link:
             link = link.split("&")[0]
-        ytdl_opts = {"quiet": True}
+        ytdl_opts = {
+            "quiet": True,
+            "remote_components": ["ejs:github"],
+            "js_runtimes": {"node": {}},
+        }
         cookie_path = get_cookie_path()
         if cookie_path:
             ytdl_opts["cookiefile"] = cookie_path
