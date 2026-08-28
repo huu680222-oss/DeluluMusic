@@ -23,6 +23,8 @@ _base_opts = {
     "format": "bestaudio[ext=m4a]",
     "geo_bypass": True,
     "nocheckcertificate": True,
+    "remote_components": ["ejs:github"],
+    "js_runtimes": {"node": {}},
 }
 _cookie_path = get_cookie_path()
 if _cookie_path:
@@ -39,6 +41,8 @@ def download(url: str, my_hook) -> str:
         "nocheckcertificate": True,
         'quiet': True,
         'no_warnings': True,
+        "remote_components": ["ejs:github"],
+        "js_runtimes": {"node": {}},
     }
     cookie_path = get_cookie_path()
     if cookie_path:
